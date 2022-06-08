@@ -32,7 +32,7 @@ export const NewTask = () => {
                     id="task-add"
                     onClick={paragraphEdited}
                     className=""  
-                    contentEditable 
+                    
                     style={{justifyContent: 'space-between'}}
                     >
                     Nome da Tarefa

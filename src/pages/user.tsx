@@ -1,21 +1,30 @@
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Footer } from "../components/footer/footer"
 import { Header } from "../components/header/header"
 import { ContextApi } from "../hooks/context/contextApi"
 import { BsFillXSquareFill } from "react-icons/bs"
 import { NewTask } from "../components/newTask/newTask"
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const PageUniqueTodo = () => {
 
     const navigate = useNavigate()
-    const methods = useContext(ContextApi)
     const user = useContext(ContextApi).userList
 
-    const updateStatusChecked = () => {
+    const paragraphs = document.querySelectorAll('.up')
 
+
+    const updateStatusChecked = () => {
+        const boxes = document.querySelectorAll('.check')
+        if(boxes){
+            boxes.forEach((box, i) => {
+                if(user){
+                    user[i].completed == true
+                }
+            })
+        }
     }
 
     const delTask = async (id: string) => {
@@ -24,6 +33,8 @@ export const PageUniqueTodo = () => {
         
         notify()
     }
+
+    
     return (
         <>
             <Header />
@@ -38,16 +49,20 @@ export const PageUniqueTodo = () => {
                                 { un.title }
                             </span>
 
-                            <div className="container container-footer-task">
+                            <div className="container container-footer-task" key={un.id + 'container'}>
                                 <input 
-                                style={{ margin: '0 5px '}}type="checkbox" 
-                                checked={un.completed} />
-
-                                {un.completed ? <p>Concluido</p> : 
-                                <p onClick={updateStatusChecked}>Pendente</p>}
+                                onChange={() => updateStatusChecked()}
+                                className="chec"
+                                style={{ margin: '0 5px '}}
+                                type="checkbox" 
+                                checked={un.completed == true ? un.completed : undefined} 
+                                key={'input' + un.id}
+                                />
+                                <p className="up"> { un.completed == true ? 'Concluida' : 'Concluir'}  </p>
                                 <p 
                                 onClick={() => delTask(un.id)}
-                                style={{marginLeft: '10px'}}> <BsFillXSquareFill size={13} color={'tomato'}/> Apagar</p>
+                                style={{marginLeft: '10px'}}> 
+                                <BsFillXSquareFill size={13} color={'tomato'}/> Apagar</p>
                             </div>
                         </div>
 
